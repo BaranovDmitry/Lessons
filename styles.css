@@ -1,0 +1,22 @@
+h1{
+    font-size: 16pt;
+}
+.width-full{
+   width: 100%;
+}
+.label{
+    font-size: 10pt;
+    margin: 5px 0 1px 15px;
+    /*color: #20201f;*/
+    color: blue;
+}
+.value{
+    font-size: 12pt;
+    margin-left: 10px;
+}
+.ta-center{
+    text-align: center;
+}
+.c-gray{
+    color: dimgray;
+}
