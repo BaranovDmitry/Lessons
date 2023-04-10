@@ -9,18 +9,62 @@ $notify = $_POST['notify'] ?? '';
 $notification_channel = $_POST['way'] ?? '';
 $files = $_FILES;
 
-function copyFile(string $dir_name, $files){
-    $path = getcwd().'/'.$dir_name;
+function handleFileErrors($error) {
+    switch ($error) {
+        case UPLOAD_ERR_OK:
+            return "File(-s) is uploaded successfully.";
+        case UPLOAD_ERR_INI_SIZE:
+        case UPLOAD_ERR_FORM_SIZE:
+            return "File is too large.";
+        case UPLOAD_ERR_PARTIAL:
+            return "File was partially uploaded.";
+        case UPLOAD_ERR_NO_FILE:
+            return "No file was uploaded.";
+        case UPLOAD_ERR_NO_TMP_DIR:
+            return "Missing temporary folder.";
+        case UPLOAD_ERR_CANT_WRITE:
+            return "Failed to write file to disk.";
+        case UPLOAD_ERR_EXTENSION:
+            return "File upload stopped by extension.";
+        default:
+            return "Unknown upload error.";
+    }
+}
+
+foreach ($files as $file) {
+    if (is_array($file['error'])) {
+        foreach ($file['error'] as $error) {
+            echo handleFileErrors($error) . "<br>";
+        }
+    } else {
+        echo handleFileErrors($file['error']) . "<br>";
+    }
+}
+
+function copyFile(string $dir_name, $files) {
+    $path = getcwd() . '/' . $dir_name;
 
     if (!file_exists($path)) {
         mkdir($path);
     }
-    foreach ($files as $file){
-        $sourceFile = $file['name'];
-        move_uploaded_file($file['tmp_name'], "$dir_name/$sourceFile");
+
+    foreach ($files as $file) {
+        if (is_array($file['name'])) {
+            for ($i = 0; $i < count($file['name']); $i++) {
+                if ($file['error'][$i] === UPLOAD_ERR_OK) {
+                    move_uploaded_file($file['tmp_name'][$i], "$dir_name/" . $file['name'][$i]);
+                }
+            }
+        } else {
+            if ($file['error'] === UPLOAD_ERR_OK) {
+                move_uploaded_file($file['tmp_name'], "$dir_name/" . $file['name']);
+            }
+        }
     }
 }
+
 copyFile('files', $files);
+
 $userData = [
     'first_name' => $first_name,
     'last_name' => $last_name,
