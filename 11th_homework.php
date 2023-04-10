@@ -1,10 +1,10 @@
 <?php
 function printHtml(array $items, string $type = 'ul'): string 
 {
-    $myHtmlView = "<{$type}><pre>";
+    $myHtmlView = "<{$type}><br/>";
 
     foreach ($items as $item) {
-        $myHtmlView .= "<li>{$item}</li><pre>";
+        $myHtmlView .= "<li>{$item}</li><br/>";
     }
 
     $myHtmlView .= "</{$type}>";
