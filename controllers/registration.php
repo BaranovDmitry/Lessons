@@ -12,8 +12,3 @@ if($_SERVER['REQUEST_METHOD'] !== 'POST'){
     header('location: https://localhost:63342/Course/13th_homework.php');
 }
 
-if(!$_POST['name'] && strlen($_POST['name'] < 5)){
-    setMessage('Name should be more than 5 letters', 'warning');
-    header('location: https://localhost:63342/Course/13th_homework.php');
-}
-

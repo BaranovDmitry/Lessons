@@ -2,7 +2,7 @@
 require_once './func/functions.php';
 
 session_start();
-getMessage('warning');
+
 ?>
 <!doctype html>
 <html lang="en">
